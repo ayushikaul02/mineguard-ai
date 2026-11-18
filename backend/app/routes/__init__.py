@@ -1,0 +1,13 @@
+from .auth import router as auth_router
+from .dashboard import router as dashboard_router
+from .mines import router as mines_router
+from .compliance import router as compliance_router
+from .inspections import router as inspections_router
+from .violations import router as violations_router
+from .corrective_actions import router as corrective_actions_router
+from .ai import router as ai_router
+from .contractors import router as contractors_router
+from .grievances import router as grievances_router
+from .documents import router as documents_router
+from .audit import router as audit_router
+from .reports import router as reports_router
