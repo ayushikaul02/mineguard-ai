@@ -120,15 +120,15 @@ git push -u origin main
    - **Build and Output Settings:** Leave default (`npm run build`, output directory `dist`).
    - **Environment Variables:** Expand this section and add:
      - **Name:** `VITE_API_URL`
-     - **Value:** `https://mineguard-backend.onrender.com` *(paste your Render backend URL from Step 2, without a trailing slash)*
+     - **Value:** `https://mineguard-ai-l9y9.onrender.com` *(active Render backend deployment URL)*
 5. Click **Deploy**.
-6. Vercel will install dependencies, bundle the TypeScript/Tailwind app, and provide your live public URL (e.g., `https://mineguard-ai.vercel.app`).
+6. Vercel will install dependencies, bundle the TypeScript/Tailwind app, and provide your live public URL (e.g., `https://mineguard-ai-vert.vercel.app`).
 
 ---
 
 ### Step 4: Verification and Faculty Presentation
 
-1. Open your live Vercel URL in your browser.
+1. Open your live Vercel URL (`https://mineguard-ai-vert.vercel.app`) in your browser.
 2. Log in using any of the 4 demo roles:
    - **Inspector:** `inspector` / `inspector123`
    - **Mine Manager:** `manager` / `manager123`
@@ -144,4 +144,4 @@ git push -u origin main
 
 > [!TIP]
 > **Dealing with Render Free Tier "Cold Start":**
-> If your site hasn't been accessed for 15 minutes, Render puts the free backend to sleep. When someone loads the dashboard, the initial API call might take 30–45 seconds to wake up. For college evaluations or live demos, simply open `https://your-backend.onrender.com/api/health` 2 minutes before your presentation to wake it up!
+> If your site hasn't been accessed for 15 minutes, Render puts the free backend to sleep. When someone loads the dashboard, the initial API call might take 30–45 seconds to wake up. For college evaluations or live demos, simply open `https://mineguard-ai-l9y9.onrender.com/api/health` 2 minutes before your presentation to wake it up!

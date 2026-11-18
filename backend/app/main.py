@@ -34,7 +34,17 @@ app = FastAPI(
 
 # CORS Middleware
 origins = settings.ALLOWED_ORIGINS
-allow_origins = ["*"] if ("*" in origins or not origins) else origins
+base_origins = [
+    "https://mineguard-ai-vert.vercel.app",
+    "https://mineguard-ai.vercel.app",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:3000"
+]
+if "*" in origins or not origins:
+    allow_origins = ["*"] + base_origins
+else:
+    allow_origins = list(set(origins + base_origins))
 
 app.add_middleware(
     CORSMiddleware,

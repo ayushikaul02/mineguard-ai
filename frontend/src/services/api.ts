@@ -14,11 +14,29 @@ import {
   User
 } from '../types';
 
-const BACKEND_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
-const API_BASE_URL = `${BACKEND_URL}/api/v1`;
+// Resolve backend URL with smart fallback for both local and cloud production
+const resolveBackendUrl = (): string => {
+  const envUrl = (import.meta.env.VITE_API_URL || '').trim().replace(/\/$/, '');
+  
+  // If no env variable is provided, or if the generic non-existent Render URL without the random suffix was used:
+  if (!envUrl || envUrl === 'https://mineguard-ai.onrender.com') {
+    // In local development on localhost or 127.0.0.1, use relative URL (Vite dev proxy)
+    if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+      return '';
+    }
+    // Production default: The active live Render backend deployment
+    return 'https://mineguard-ai-l9y9.onrender.com';
+  }
+  
+  return envUrl;
+};
+
+export const BACKEND_URL = resolveBackendUrl();
+export const API_BASE_URL = `${BACKEND_URL}/api/v1`;
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
+  timeout: 60000, // 60s timeout to gracefully accommodate Render free tier cold starts
 });
 
 api.interceptors.request.use((config) => {

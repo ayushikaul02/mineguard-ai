@@ -21,13 +21,7 @@ from .services.risk_engine import calculate_risk_score
 from .services.audit_service import record_audit_log
 
 def seed_database(db: Session):
-    # Check if already seeded
-    if db.query(Mine).count() > 0:
-        return
-
-    print("--- Initializing MineGuard AI Seed Database ---")
-
-    # 1. Users
+    # 1. Always ensure the 4 statutory demo accounts exist in the database
     users_data = [
         {"username": "inspector", "password": "inspector123", "full_name": "Rajesh Sharma (DGMS Certified Inspector)", "role": "inspector", "mine_id": 1, "email": "r.sharma@mineguard.gov.in", "phone": "+91 98351 22410"},
         {"username": "manager", "password": "manager123", "full_name": "Col. Vikramjit Sengupta (Mine General Manager)", "role": "manager", "mine_id": 1, "email": "v.sengupta@coalindia.gov.in", "phone": "+91 94311 88201"},
@@ -35,18 +29,26 @@ def seed_database(db: Session):
         {"username": "auditor", "password": "auditor123", "full_name": "Harishankar Trivedi (DGMS Chief Statutory Auditor)", "role": "auditor", "mine_id": None, "email": "auditor.trivedi@dgms.gov.in", "phone": "+91 91234 56789"}
     ]
     for u in users_data:
-        db_u = User(
-            username=u["username"],
-            password_hash=get_password_hash(u["password"]),
-            full_name=u["full_name"],
-            role=u["role"],
-            mine_id=u["mine_id"],
-            email=u["email"],
-            phone=u["phone"],
-            is_active=True
-        )
-        db.add(db_u)
+        existing = db.query(User).filter(User.username == u["username"]).first()
+        if not existing:
+            db_u = User(
+                username=u["username"],
+                password_hash=get_password_hash(u["password"]),
+                full_name=u["full_name"],
+                role=u["role"],
+                mine_id=u["mine_id"],
+                email=u["email"],
+                phone=u["phone"],
+                is_active=True
+            )
+            db.add(db_u)
     db.commit()
+
+    # Check if domain entity seed data is already initialized
+    if db.query(Mine).count() > 0:
+        return
+
+    print("--- Initializing MineGuard AI Seed Database ---")
 
     # 2. Mines
     mines_data = [

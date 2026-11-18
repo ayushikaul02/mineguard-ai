@@ -19,7 +19,11 @@ export const LoginPage: React.FC = () => {
       await login(username, password);
       navigate('/');
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Invalid username or password');
+      if (err.code === 'ECONNABORTED' || err.message?.includes('Network Error') || !err.response) {
+        setError('Server is waking up (Render free tier cold start) or network connection interrupted. Please wait 30 seconds and retry.');
+      } else {
+        setError(err.response?.data?.detail || 'Invalid username or password');
+      }
     } finally {
       setLoading(false);
     }
@@ -32,7 +36,11 @@ export const LoginPage: React.FC = () => {
       await quickLogin(role);
       navigate('/');
     } catch (err: any) {
-      setError(err.response?.data?.detail || `Failed to login as ${role}`);
+      if (err.code === 'ECONNABORTED' || err.message?.includes('Network Error') || !err.response) {
+        setError('Server is waking up (Render free tier cold start) or network connection interrupted. Please wait 30 seconds and retry.');
+      } else {
+        setError(err.response?.data?.detail || `Failed to login as ${role}`);
+      }
     } finally {
       setLoading(false);
     }
